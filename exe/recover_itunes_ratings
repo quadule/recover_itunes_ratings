@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+require "recover_itunes_ratings"
+
+options = {
+  dry_run: true,
+  reset_album_ratings: false
+}
+
+optparse = OptionParser.new do |opts|
+  opts.banner = 'Usage: recover_itunes_ratings "iTunes Music Library.xml" [options]'
+
+  opts.separator ""
+  opts.separator "By default, only prints the ratings that will be changed."
+  opts.separator ""
+
+  opts.on("-a", "--albums", "Reset all user-supplied album ratings") do |v|
+    options[:reset_album_ratings] = true
+  end
+
+  opts.on("-r", "--run", "Run instead of only printing changes") do |v|
+    options[:dry_run] = false
+  end
+end
+optparse.parse!
+
+if ARGV.empty?
+  puts optparse
+  exit(-1)
+end
+
+RecoverItunesRatings::Runner.new(ARGV[0], options).run

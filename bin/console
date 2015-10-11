@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "recover_itunes_ratings"
+
+require "irb"
+IRB.start
